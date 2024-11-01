@@ -12,6 +12,14 @@ app.app_context().push()
 
 connect_db(app)
 
+#***** APP ROUTES BELOW ***** 
+
+@app.route('/')
+def get_home():
+
+    ccs = Cupcake.query.all()
+    return render_template('home.html', ccs=ccs)
+
 
 # **** API BELOW ***** 
 
@@ -42,5 +50,27 @@ def post_cupcake():
     db.session.commit()
     response = jsonify(cupcake=new_cc.serialize())
     return (response, 201)
+
+@app.route('/api/cupcakes/<int:cc_id>', methods=['PATCH'])
+def update_cupcake(cc_id):
+    '''updates 1 particular cupcake'''
+
+    cc = Cupcake.query.get_or_404(cc_id)
+    cc.flavor = request.json.get('flavor', cc.flavor)
+    cc.size = request.json.get('size', cc.size)
+    cc.rating = request.json.get('rating', cc.rating)
+    cc.image = request.json.get('image', cc.image)
+    db.session.commit()
+    return jsonify(cupcakes=cc.serialize())
+
+@app.route('/api/cupcakes/<int:cc_id>', methods=['DELETE'])
+def delete_cupcake(cc_id):
+    '''deletes a particular cupcake'''
+
+    cc = Cupcake.query.get_or_404(cc_id)
+    db.session.delete(cc)
+    db.session.commit()
+    return jsonify(message='deleted')
+
 
 

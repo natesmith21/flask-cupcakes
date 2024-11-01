@@ -1,0 +1,18 @@
+
+body {
+    background-color: #bfafc9;
+}
+
+h1 {
+    color: #82d0f5;
+}
+
+.btn_margin{
+    margin: 1em;
+}
+
+/* .table{
+    --bs-table-color: #82d0f5;
+    --bs-table-bg: #bfafc9;
+    font-weight: 600;
+} */
